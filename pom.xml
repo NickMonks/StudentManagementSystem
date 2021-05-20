@@ -15,6 +15,8 @@
 	<description>Project for Management System of students</description>
 	<properties>
 		<java.version>15</java.version>
+		<app.image.name>management-system-student</app.image.name>
+		<app.image.tag/>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -72,6 +74,126 @@
 
 	<!-- profile allow us to not bundle the frontend if we don't want -->
 	<profiles>
+		<profile>
+			<!-- to avoid typing "./mvnw clean install jib:build -Djib.to.image=nickmonks94/managementsystem-students:v1"
+			we define the following profile. This profile is for docker hub-->
+			<id>jib-push-to-dockerhub</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Added plugin for building docker images using jib -->
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>jib-maven-plugin</artifactId>
+						<version>2.5.2</version>
+						<!-- Configure image and container -->
+						<configuration>
+							<from>
+								<image>openjdk:15</image>
+							</from>
+							<container>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<!-- OCI: Open container implementation-->
+								<format>OCI</format>
+							</container>
+						</configuration>
+						<executions>
+							<execution>
+								<id>push-custom-tag</id>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<configuration>
+									<!-- add the connection to where we want to push our docker image -->
+									<to>
+										<image>docker.io/nickmonks94/${app.image.name}:${app.image.tag}</image>
+									</to>
+								</configuration>
+							</execution>
+							<execution>
+								<id>push-latest-tag</id>
+								<phase>package</phase>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<configuration>
+									<!-- add the connection to where we want to push our docker image -->
+									<to>
+										<image>docker.io/nickmonks94/${app.image.name}:latest</image>
+									</to>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<!-- to avoid typing "./mvnw clean install jib:build -Djib.to.image=nickmonks94/managementsystem-students:v1"
+			we define the following profile. This profile is for our local server-->
+			<!-- to activate this profile, type: ./mvnw clean install -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=1"
+				This will push a new image into dockerhub thanks to jib plugin-->
+			<id>jib-push-to-local</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<!-- Added plugin for building docker images using jib -->
+						<groupId>com.google.cloud.tools</groupId>
+						<artifactId>jib-maven-plugin</artifactId>
+						<version>2.5.2</version>
+						<!-- Configure image and container -->
+						<configuration>
+							<from>
+								<image>openjdk:15</image>
+							</from>
+							<container>
+								<ports>
+									<port>8080</port>
+								</ports>
+								<!-- OCI: Open container implementation-->
+								<format>OCI</format>
+							</container>
+						</configuration>
+						<executions>
+							<execution>
+								<id>push-custom-tag</id>
+								<phase>package</phase>
+								<goals>
+									<goal>dockerBuild</goal>
+								</goals>
+								<configuration>
+									<!-- add the connection to where we want to push our docker image -->
+									<to>
+										<image>nicolaskevingarreta/${app.image.name}:{app.image.tag}</image>
+									</to>
+								</configuration>
+							</execution>
+							<execution>
+								<id>push-latest-tag</id>
+								<phase>package</phase>
+								<goals>
+									<goal>dockerBuild</goal>
+								</goals>
+								<configuration>
+									<!-- add the connection to where we want to push our docker image, which is local -->
+									<to>
+										<image>nicolaskevingarreta/${app.image.name}:latest</image>
+									</to>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 		<profile>
 			<id>build-frontend</id>
 			<activation>
