@@ -1,6 +1,14 @@
 # Docker compose for MANAGEMENT SYSTEMS STUDENT
-# Hosted in AWS using ElasticBeanstalk: http://managementsystemstudent-env.eba-jevqcxee.eu-west-2.elasticbeanstalk.com/
+# Hosted in AWS using ElasticBeanstalk:
 
+# The docker database will consist of: PSQL database with volume, a network in docker and another docker container
+# which queries the PSQL docker container.
+# - create network: docker network create db
+# - run container for PSQL: docker run --name db -p 5432:5432 --network=db -v "$PWD:/var/lib/postgresql/data" -e POSTGRES_PASSWORD=password -d postgres:alpine
+#   (map network and where psql stores data to our PWD, -v stands for volume and -e for enviroment variables. -d stands for detach mode - it will pull up the image locally)
+# - connect another container to our network: docker run -it --rm --network=db postgres:alpine \
+#                                             psql -h db -U postgres (it stands for interactive +tty, will bring you to the terminal; using \q will delete container)
+# -
 version : "3.8"
 services:
   backend:
