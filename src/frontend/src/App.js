@@ -4,7 +4,7 @@ import {
     Layout,
     Menu,
     Breadcrumb,
-    Table, Spin, Empty, Button
+    Table, Spin, Empty, Button, Badge, Tag
 } from 'antd';
 import {
     DesktopOutlined,
@@ -18,11 +18,34 @@ import {
 import './StudentDrawerForm';
 import './App.css';
 import StudentDrawerForm from "./StudentDrawerForm";
+import Avatar from "antd/es/avatar/avatar";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
+const TheAvatar =({name}) => {
+    let trim = name.trim();
+    if (trim.length === 0){
+        return <Avatar icon={<UserOutlined/>} />
+    }
+
+    const split = trim.split(" ");
+    if (split.length ===1){
+        return <Avatar>{name.charAt(0)}</Avatar>
+    }
+
+    return <Avatar>
+        {`${split[0].charAt(0)} ${split[1].charAt(0)}`}
+        </Avatar>
+
+}
 
 const columns = [
+    {
+        title: '',
+        dataIndex: 'avatar',
+        key: 'avatar',
+        render: (text, student) => <TheAvatar name={student.name}/>
+    },
     {
         title: 'Id',
         dataIndex: 'id',
@@ -83,7 +106,7 @@ function App() {
             return <Spin indicator={antIcon} />
         }
         if (students.length <= 0) {
-            return <Empty />;
+            return <Empty />
         }
 
         // Added the "<></> to return more than one component and add the Antd drawer
@@ -92,25 +115,35 @@ function App() {
             <StudentDrawerForm
             setShowDrawer={setShowDrawer}
             showDrawer={showDrawer}
+            fetchStudents={fetchStudents}
             />
             <Table
                 dataSource={students}
                 columns={columns}
                 bordered
-                title={() => <Button
-                    // add drawer button event
-                    onClick={() => setShowDrawer(!showDrawer)}
-                    type="primary" icon={<PlusCircleOutlined />} size="large">
-                    Add new Student
-                </Button>}
-                pagination={{ pageSize: 50 }}
-                scroll={{ y: 240 }}
-            />;
+                title={() =>
+                    <>
+                        <Button
+                        // add drawer button event
+                        onClick={() => setShowDrawer(!showDrawer)}
+                        type="primary"
+                        icon={<PlusCircleOutlined />}
+                        shape="round"
+                        size="small">
+                        Add new Student
+                        </Button>
+                        <Tag style={{marginLeft: "15px"}}>Number Of Students</Tag>
+                        <Badge count={students.length} className="site-badge-count-4" />
+                    </>
+                }
+                pagination={{ pageSize: 40 }}
+                scroll={{ y: 1000 }}
+            />
         </>
     }
 
     // this.setState is equivalent to call directly the setX() method
-    return <Layout style={{minHeight: '100vh'}}>
+    return <Layout style={{minHeight: '150vh'}}>
         <Sider collapsible collapsed={collapsed}
                onCollapse={setCollapsed}>
             <div className="logo"/>

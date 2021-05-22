@@ -13,3 +13,13 @@ const checkStatus = response => {
 export const getAllStudents = () =>
     fetch("api/v1/students")
         .then(checkStatus);
+
+// Add method to take the body client POST request to our backend:
+export const addNewStudent = student =>
+    fetch("api/v1/students", {
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(student)}
+    );

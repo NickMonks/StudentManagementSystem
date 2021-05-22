@@ -1,12 +1,37 @@
-import {Drawer, Input, Col, Select, Form, Row, Button} from 'antd';
+import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
+import {addNewStudent} from "./client";
+import { LoadingOutlined } from '@ant-design/icons';
+import {useState} from "react";
+import {successNotification, errorNotification} from "./Notification";
 
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
 const {Option} = Select;
 
-function StudentDrawerForm({showDrawer, setShowDrawer}) {
+function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
     const onCLose = () => setShowDrawer(false);
 
-    const onFinish = values => {
-        alert(JSON.stringify(values, null, 2));
+    const [Submit, setSubmit] = useState(false);
+
+    const onFinish = student => {
+        // when is submitted reload the page by changing the state:
+        setSubmit(true)
+
+        console.log(JSON.stringify(student))
+        addNewStudent(student)
+            .then(()=> {
+                console.log("student added succesfully")
+                setSubmit(false)
+                onCLose() // to close the drawer and change the state
+                successNotification("Student succesfully added",
+                    `${student.name} was added to the system!`) // Notification for success
+                fetchStudents() // reload the table
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(()=>{
+                setSubmit(false)
+            })
     };
 
     const onFinishFailed = errorInfo => {
@@ -78,6 +103,9 @@ function StudentDrawerForm({showDrawer, setShowDrawer}) {
                         </Button>
                     </Form.Item>
                 </Col>
+            </Row>
+            <Row>
+                {Submit && <Spin indicator={antIcon} /> }
             </Row>
         </Form>
     </Drawer>
