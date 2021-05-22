@@ -17,4 +17,9 @@ public class StudentService {
         // because we extend repository JPA, we get methods that will automatically query in SQL using the methods
         return studentRepository.findAll();
     }
+
+    public void addStudent(Student student) {
+        // check if email is taken:
+        studentRepository.save(student);
+    }
 }

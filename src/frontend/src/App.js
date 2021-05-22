@@ -4,7 +4,7 @@ import {
     Layout,
     Menu,
     Breadcrumb,
-    Table, Spin, Empty
+    Table, Spin, Empty, Button
 } from 'antd';
 import {
     DesktopOutlined,
@@ -12,10 +12,12 @@ import {
     FileOutlined,
     TeamOutlined,
     UserOutlined,
-    LoadingOutlined
+    LoadingOutlined, DownloadOutlined, PlusCircleOutlined
 } from '@ant-design/icons';
 
+import './StudentDrawerForm';
 import './App.css';
+import StudentDrawerForm from "./StudentDrawerForm";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
@@ -50,7 +52,7 @@ function App() {
 
     // React Hook. Takes the initial state as an argument and returns the state and how to set it. is "hooked"
     // or managed by react, so it will persist even if App ends.
-
+    const [showDrawer, setShowDrawer] = useState(false);
     const [students, setStudents] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [fetching, setFetching] = useState(true);
@@ -83,14 +85,28 @@ function App() {
         if (students.length <= 0) {
             return <Empty />;
         }
-        return <Table
-            dataSource={students}
-            columns={columns}
-            bordered
-            title={() => 'Students'}
-            pagination={{ pageSize: 50 }}
-            scroll={{ y: 240 }}
-        />;
+
+        // Added the "<></> to return more than one component and add the Antd drawer
+        // state is managed with the button component
+        return <>
+            <StudentDrawerForm
+            setShowDrawer={setShowDrawer}
+            showDrawer={showDrawer}
+            />
+            <Table
+                dataSource={students}
+                columns={columns}
+                bordered
+                title={() => <Button
+                    // add drawer button event
+                    onClick={() => setShowDrawer(!showDrawer)}
+                    type="primary" icon={<PlusCircleOutlined />} size="large">
+                    Add new Student
+                </Button>}
+                pagination={{ pageSize: 50 }}
+                scroll={{ y: 240 }}
+            />;
+        </>
     }
 
     // this.setState is equivalent to call directly the setX() method
