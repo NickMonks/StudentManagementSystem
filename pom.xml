@@ -44,6 +44,10 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -86,7 +90,8 @@
 	<profiles>
 		<profile>
 			<!-- to avoid typing "./mvnw clean install jib:build -Djib.to.image=nickmonks94/managementsystem-students:v1"
-			we define the following profile. This profile is for docker hub-->
+			we define the following profile. This profile is for docker hub: it will use jib to push our jar (bundle by default
+			with the frontend solution) to our docker hub. The docker compose yaml will pull that image to load it in beanstalk-->
 			<id>jib-push-to-dockerhub</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>

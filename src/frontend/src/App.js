@@ -1,10 +1,13 @@
 import {useState, useEffect} from 'react'
-import {getAllStudents} from "./client";
+import {
+    getAllStudents,
+    deleteStudent} from "./client";
 import {
     Layout,
     Menu,
     Breadcrumb,
-    Table, Spin, Empty, Button, Badge, Tag
+    Radio,
+    Table, Spin, Empty, Button, Badge, Tag, Popconfirm
 } from 'antd';
 import {
     DesktopOutlined,
@@ -19,6 +22,7 @@ import './StudentDrawerForm';
 import './App.css';
 import StudentDrawerForm from "./StudentDrawerForm";
 import Avatar from "antd/es/avatar/avatar";
+import {errorNotification, successNotification} from "./Notification";
 
 const {Header, Content, Footer, Sider} = Layout;
 const {SubMenu} = Menu;
@@ -39,7 +43,17 @@ const TheAvatar =({name}) => {
 
 }
 
-const columns = [
+// remove function which binds the studentId and callback that updates the state
+const removeStudent = (studentId, callback) => {
+    deleteStudent(studentId).then(()=>{
+        successNotification("Student Deleted", `Student with ID ${studentId} was deleted.`);
+        // after deletion, we call fetchStudent to update the state:
+        callback();
+    });
+}
+
+// Update table to include delete options
+const columns = fetchStudents => [
     {
         title: '',
         dataIndex: 'avatar',
@@ -66,6 +80,23 @@ const columns = [
         dataIndex: 'gender',
         key: 'gender',
     },
+    {
+        // DELETE - EDIT COLUMN
+        title: 'Actions',
+        key: 'actions',
+        render: (text, student) =>
+            <Radio.Group>
+                <Popconfirm
+                    placement='topRight'
+                    title={`Are you sure you want to delete ${student.name}?`}
+                    onConfirm={()=> removeStudent(student.id, fetchStudents)}
+                    okText='Yes'
+                    cancelText='No' >
+                    <Radio.Button value="small">Delete</Radio.Button>
+                </Popconfirm>
+                <Radio.Button value="small">Edit</Radio.Button>
+            </Radio.Group>
+    }
 ];
 
 const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
@@ -93,8 +124,17 @@ function App() {
                  */
 
                 setStudents(data);
-                setFetching(false);
-            })
+
+            }).catch(err => {
+                // error handling from server error
+                console.log(err.response);
+                err.response.json().then(res => {
+                    // use the json error payload:
+                    errorNotification("There was an internal server error",
+                        `${res.message} [statusCode:${res.status}]`
+                    )
+                });
+        }).finally(()=>setFetching(false));
 
     useEffect(() => {
         console.log("component is mounted");
@@ -106,7 +146,21 @@ function App() {
             return <Spin indicator={antIcon} />
         }
         if (students.length <= 0) {
-            return <Empty />
+            // In case no data is return, show the following components
+            return <>
+                <Button
+                    onClick={()=> setShowDrawer(!showDrawer)}
+                    type="primary" shape="round" icon={<PlusOutlined/>} size="small">
+                    Add New Student
+                </Button>
+                <StudentDrawerForm
+                    showDrawer={showDrawer}
+                    setShowDrawer={setShowDrawer}
+                    fetchStudents={fetchStudents}
+                    />
+                <!-- Displays the "No Data" Icon-->
+                <Empty />
+                </>
         }
 
         // Added the "<></> to return more than one component and add the Antd drawer
@@ -119,7 +173,7 @@ function App() {
             />
             <Table
                 dataSource={students}
-                columns={columns}
+                columns={columns(fetchStudents)}
                 bordered
                 title={() =>
                     <>

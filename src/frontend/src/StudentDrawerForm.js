@@ -28,6 +28,14 @@ function StudentDrawerForm({showDrawer, setShowDrawer, fetchStudents}) {
             })
             .catch(err => {
                 console.log(err)
+                err.response.json().then(res => {
+                    // use the json error payload:
+                    // change placement to bottomLeft
+                    errorNotification("There was an internal server error",
+                        `${res.message} [statusCode:${res.status}]`,
+                        "bottomLeft"
+                    )
+                })
             })
             .finally(()=>{
                 setSubmit(false)
