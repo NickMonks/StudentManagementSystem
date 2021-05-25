@@ -15,7 +15,7 @@ import {
     FileOutlined,
     TeamOutlined,
     UserOutlined,
-    LoadingOutlined, DownloadOutlined, PlusCircleOutlined
+    LoadingOutlined, DownloadOutlined, PlusCircleOutlined, PlusOutlined
 } from '@ant-design/icons';
 
 import './StudentDrawerForm';
@@ -158,7 +158,6 @@ function App() {
                     setShowDrawer={setShowDrawer}
                     fetchStudents={fetchStudents}
                     />
-                <!-- Displays the "No Data" Icon-->
                 <Empty />
                 </>
         }
