@@ -8,7 +8,7 @@ class ManagementSystemApplicationTests {
 
 	@Test
 	void contextLoads() {
-		//Assertions.fail("Oops test failed");
+		//Assertions.fail("Ooddddddps test failed");
 	}
 
 }
