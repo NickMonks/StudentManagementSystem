@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -10,12 +11,12 @@
 	</parent>
 	<groupId>com.project</groupId>
 	<artifactId>ManagementSystem</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>v2</version>
 	<name>ManagementSystem</name>
 	<description>Project for Management System of students</description>
 	<properties>
 		<java.version>15</java.version>
-		<app.image.name>management-system-student</app.image.name>
+		<app.image.name>management-system-students</app.image.name>
 		<app.image.tag/>
 	</properties>
 	<dependencies>
@@ -34,16 +35,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
-			<!-- Since we have the parent POM we can add any dependency there -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-validation</artifactId>
@@ -89,9 +92,6 @@
 	<!-- profile allow us to not bundle the frontend if we don't want -->
 	<profiles>
 		<profile>
-			<!-- to avoid typing "./mvnw clean install jib:build -Djib.to.image=nickmonks94/managementsystem-students:v1"
-			we define the following profile. This profile is for docker hub: it will use jib to push our jar (bundle by default
-			with the frontend solution) to our docker hub. The docker compose yaml will pull that image to load it in beanstalk-->
 			<id>jib-push-to-dockerhub</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -99,11 +99,9 @@
 			<build>
 				<plugins>
 					<plugin>
-						<!-- Added plugin for building docker images using jib -->
 						<groupId>com.google.cloud.tools</groupId>
 						<artifactId>jib-maven-plugin</artifactId>
 						<version>2.5.2</version>
-						<!-- Configure image and container -->
 						<configuration>
 							<from>
 								<image>openjdk:15</image>
@@ -112,7 +110,6 @@
 								<ports>
 									<port>8080</port>
 								</ports>
-								<!-- OCI: Open container implementation-->
 								<format>OCI</format>
 							</container>
 						</configuration>
@@ -120,28 +117,26 @@
 							<execution>
 								<id>push-custom-tag</id>
 								<phase>package</phase>
-								<goals>
-									<goal>build</goal>
-								</goals>
 								<configuration>
-									<!-- add the connection to where we want to push our docker image -->
 									<to>
 										<image>docker.io/nickmonks94/${app.image.name}:${app.image.tag}</image>
 									</to>
 								</configuration>
+								<goals>
+									<goal>build</goal>
+								</goals>
 							</execution>
 							<execution>
 								<id>push-latest-tag</id>
 								<phase>package</phase>
-								<goals>
-									<goal>build</goal>
-								</goals>
 								<configuration>
-									<!-- add the connection to where we want to push our docker image -->
 									<to>
 										<image>docker.io/nickmonks94/${app.image.name}:latest</image>
 									</to>
 								</configuration>
+								<goals>
+									<goal>build</goal>
+								</goals>
 							</execution>
 						</executions>
 					</plugin>
@@ -149,10 +144,6 @@
 			</build>
 		</profile>
 		<profile>
-			<!-- to avoid typing "./mvnw clean install jib:build -Djib.to.image=nickmonks94/managementsystem-students:v1"
-			we define the following profile. This profile is for our local server-->
-			<!-- to activate this profile, type: ./mvnw clean install -P build-frontend -P jib-push-to-dockerhub -Dapp.image.tag=1"
-				This will push a new image into dockerhub thanks to jib plugin-->
 			<id>jib-push-to-local</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
@@ -160,11 +151,9 @@
 			<build>
 				<plugins>
 					<plugin>
-						<!-- Added plugin for building docker images using jib -->
 						<groupId>com.google.cloud.tools</groupId>
 						<artifactId>jib-maven-plugin</artifactId>
 						<version>2.5.2</version>
-						<!-- Configure image and container -->
 						<configuration>
 							<from>
 								<image>openjdk:15</image>
@@ -173,7 +162,6 @@
 								<ports>
 									<port>8080</port>
 								</ports>
-								<!-- OCI: Open container implementation-->
 								<format>OCI</format>
 							</container>
 						</configuration>
@@ -181,28 +169,26 @@
 							<execution>
 								<id>push-custom-tag</id>
 								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>nickmonks94/${app.image.name}:${app.image.tag}</image>
+									</to>
+								</configuration>
 								<goals>
 									<goal>dockerBuild</goal>
 								</goals>
-								<configuration>
-									<!-- add the connection to where we want to push our docker image -->
-									<to>
-										<image>nicolaskevingarreta/${app.image.name}:{app.image.tag}</image>
-									</to>
-								</configuration>
 							</execution>
 							<execution>
 								<id>push-latest-tag</id>
 								<phase>package</phase>
+								<configuration>
+									<to>
+										<image>nickmonks94/${app.image.name}:latest</image>
+									</to>
+								</configuration>
 								<goals>
 									<goal>dockerBuild</goal>
 								</goals>
-								<configuration>
-									<!-- add the connection to where we want to push our docker image, which is local -->
-									<to>
-										<image>nicolaskevingarreta/${app.image.name}:latest</image>
-									</to>
-								</configuration>
 							</execution>
 						</executions>
 					</plugin>
@@ -220,10 +206,10 @@
 						<groupId>com.github.eirslett</groupId>
 						<artifactId>frontend-maven-plugin</artifactId>
 						<!-- Use the latest released version:
-                                  https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
-						<version>1.11.2</version>
+                        https://repo1.maven.org/maven2/com/github/eirslett/frontend-maven-plugin/ -->
+						<version>1.9.1</version>
 						<configuration>
-							<nodeVersion>v4.6.0</nodeVersion>
+							<nodeVersion>v14.17.0</nodeVersion>
 							<workingDirectory>src/frontend</workingDirectory>
 						</configuration>
 						<executions>
@@ -233,8 +219,8 @@
 									<goal>install-node-and-npm</goal>
 								</goals>
 								<configuration>
-									<nodeVersion>v15.4.0</nodeVersion>
-									<npmVersion>7.3.0</npmVersion>
+									<nodeVersion>v14.17.0</nodeVersion>
+									<npmVersion>7.13.0</npmVersion>
 								</configuration>
 							</execution>
 							<execution>
@@ -261,21 +247,17 @@
 						<artifactId>maven-resources-plugin</artifactId>
 						<executions>
 							<execution>
-								<!-- copy the build folder, from the phase
-								process-classes and the goal is copy-resources-->
 								<id>copy-build-folder</id>
 								<phase>process-classes</phase>
 								<goals>
-									<goal>
-										copy-resources
-									</goal>
+									<goal>copy-resources</goal>
 								</goals>
 								<configuration>
-									<!-- the resource is to copy the build-->
 									<resources>
 										<resource>
 											<directory>src/frontend/build</directory>
 										</resource>
+
 									</resources>
 									<outputDirectory>${basedir}/target/classes/static</outputDirectory>
 								</configuration>
@@ -286,5 +268,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>

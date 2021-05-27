@@ -8,13 +8,18 @@
 #   (map network and where psql stores data to our PWD, -v stands for volume and -e for enviroment variables. -d stands for detach mode - it will pull up the image locally)
 # - connect another container to our network: docker run -it --rm --network=db postgres:alpine \
 #                                             psql -h db -U postgres (it stands for interactive +tty, will bring you to the terminal; using \q will delete container)
-# -
+#
+# To build the image use: ./mvnw clean install -P build-frontend -P jib-build-to-dockerhub -Dapp.image.tag=latest
+
 version : "3.8"
 services:
   backend:
     #Image pulled from our docker hub
-    image: "nickmonks94/management-system-student:latest"
+    image: "nickmonks94/management-system-students:latest"
     ports:
       - "80:8080"
     #Restart if any issues appear
     restart: "always"
+    environment:
+      # This will read to the application-dev.properties
+      SPRING_PROFILES_ACTIVE: dev

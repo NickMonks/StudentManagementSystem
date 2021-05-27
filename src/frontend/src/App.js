@@ -15,8 +15,9 @@ import {
     FileOutlined,
     TeamOutlined,
     UserOutlined,
-    LoadingOutlined, DownloadOutlined, PlusCircleOutlined, PlusOutlined
+    LoadingOutlined, PlusCircleOutlined, PlusOutlined
 } from '@ant-design/icons';
+
 
 import './StudentDrawerForm';
 import './App.css';
@@ -145,6 +146,7 @@ function App() {
         if (fetching) {
             return <Spin indicator={antIcon} />
         }
+
         if (students.length <= 0) {
             // In case no data is return, show the following components
             return <>
@@ -232,7 +234,7 @@ function App() {
                     {renderStudents()}
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>By NickMonks</Footer>
+            <Footer style={{textAlign: 'center'}}>By Me</Footer>
         </Layout>
     </Layout>
 }

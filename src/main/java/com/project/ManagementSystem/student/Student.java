@@ -6,14 +6,13 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+// Include JPA to communicate to database
 @ToString
 @Getter
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-
-// Include JPA to communicate to database
 @Entity
 @Table
 public class Student {

@@ -1,7 +1,7 @@
 ---
 title: npm-dedupe
 section: 1
-description: Reduce duplication
+description: Reduce duplication in the package tree
 ---
 
 ### Synopsis
@@ -10,7 +10,7 @@ description: Reduce duplication
 npm dedupe
 npm ddp
 
-aliases: find-dupes, ddp
+aliases: ddp
 ```
 
 ### Description
@@ -74,6 +74,7 @@ Using `npm find-dupes` will run the command in `--dry-run` mode.
 
 ### See Also
 
-* [npm ls](/cli-commands/ls)
-* [npm update](/cli-commands/update)
-* [npm install](/cli-commands/install)
+* [npm find-dupes](/commands/npm-find-dupes)
+* [npm ls](/commands/npm-ls)
+* [npm update](/commands/npm-update)
+* [npm install](/commands/npm-install)

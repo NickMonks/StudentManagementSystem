@@ -12,7 +12,7 @@ npm ci
 
 ### Description
 
-This command is similar to [`npm install`](/cli-commands/install), except
+This command is similar to [`npm install`](/commands/npm-install), except
 it's meant to be used in automated environments such as test platforms,
 continuous integration, and deployment -- or any situation where you want
 to make sure you're doing a clean install of your dependencies.
@@ -68,4 +68,4 @@ cache:
 ### See Also
 
 * [npm install](/commands/npm-install)
-* [package-locks](/configuring-npm/package-locks)
+* [package-lock.json](/configuring-npm/package-lock-json)
