@@ -235,7 +235,7 @@ function App() {
                 </div>
             </Content>
             <Footer style={{textAlign: 'center'}}>
-                By NickMonks
+                By Nicolas Monkerud
                 <Divider>
                     <a
                         rel="noopener noreferrer"
