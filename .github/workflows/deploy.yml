@@ -20,7 +20,7 @@ env:
   AWS_REGION: eu-west-2
   EB_ENVIRONMENT_NAME: Managementsystemstudent-env
   EB_APPLICATION_NAME: management-system-student
-  EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yml
+  EB_DEPLOYMENT_PACKAGE: elasticbeanstalk/docker-compose.yaml
 
 jobs:
   deploy:
@@ -75,16 +75,16 @@ jobs:
           text: ':white_check_mark: pushed amigoscode/springboot-react-fullstack:${{steps.build-number.outputs.BUILD_NUMBER}} to docker hub... https://hub.docker.com/repository/docker/amigoscode/springboot-react-fullstack'
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      - name: Update and commit app version in docker-compose.yml
+      - name: Update and commit app version in docker-compose.yaml
         # The s is the substitute command. The three slashes (/) are used to separate the different text fields. You can use other characters to delimit the fields if it would be more helpful.
         run: |
           BUILD_NUMBER=${{steps.build-number.outputs.BUILD_NUMBER}}
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
-          sed -i -E 's_(nickmonks94/management-system-students:)([^"]*)_\1'${BUILD_NUMBER}'_' elasticbeanstalk/docker-compose.yml
-          echo -e "Current elasticbeanstalk/docker-compose.yml\n$(cat elasticbeanstalk/docker-compose.yml)"
+          echo -e "Current elasticbeanstalk/docker-compose.yaml\n$(cat elasticbeanstalk/docker-compose.yaml)"
+          sed -i -E 's_(nickmonks94/management-system-students:)([^"]*)_\1'${BUILD_NUMBER}'_' elasticbeanstalk/docker-compose.yaml
+          echo -e "Current elasticbeanstalk/docker-compose.yaml\n$(cat elasticbeanstalk/docker-compose.yaml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add elasticbeanstalk/docker-compose.yml
+          git add elasticbeanstalk/docker-compose.yaml
           git commit -m "new app version: ${BUILD_NUMBER}"
           git push
       - uses: 8398a7/action-slack@v3
