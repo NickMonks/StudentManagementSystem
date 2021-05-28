@@ -238,6 +238,7 @@ function App() {
                 By NickMonks
                 <Divider>
                     <a
+                        rel="noopener noreferrer"
                         target="_blank"
                         href="https://www.linkedin.com/in/nicolasmonkerud/">
                         Check out My Linkedin!
