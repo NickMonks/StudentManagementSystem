@@ -4,11 +4,11 @@ on:
   pull_request:
     branches: [ main ]
 
-  workflow_dispatch
+  workflow_dispatch:
 
 env:
   POSTGRESQL_VERSION: 13.1
-  POSTGRESQL_DB: studentdb
+  POSTGRESQL_DB: amigoscode
   POSTGRESQL_USER: postgres
   POSTGRESQL_PASSWORD: password
   JAVA_VERSION: 1.15
