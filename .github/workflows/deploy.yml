@@ -84,7 +84,7 @@ jobs:
           echo -e "Current elasticbeanstalk_aws/docker-compose.yml\n$(cat elasticbeanstalk_aws/docker-compose.yml)"
           git config user.name github-actions
           git config user.email github-actions@github.com
-          git add elasticbeanstalk_aws/docker-compose.yml
+          git add elasticbeanstalk_aws/docker-compose.yaml
           git commit -m "new app version: ${BUILD_NUMBER}"
           git push
       - uses: 8398a7/action-slack@v3
