@@ -240,7 +240,7 @@ function App() {
                         rel="noopener noreferrer"
                         target="_blank"
                         href="https://www.linkedin.com/in/nicolasmonkerud/">
-                        Click to see my LinkedIn Profile!
+                        Click to see my Linkedin Profile!
                     </a>
                 </Divider>
             </Footer>
