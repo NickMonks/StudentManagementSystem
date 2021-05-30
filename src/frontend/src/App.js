@@ -7,7 +7,7 @@ import {
     Menu,
     Breadcrumb,
     Radio,
-    Table, Spin, Empty, Button, Badge, Tag, Popconfirm
+    Table, Spin, Empty, Button, Badge, Tag, Popconfirm, Divider
 } from 'antd';
 import {
     DesktopOutlined,
@@ -234,7 +234,16 @@ function App() {
                     {renderStudents()}
                 </div>
             </Content>
-            <Footer style={{textAlign: 'center'}}>By Me</Footer>
+            <Footer style={{textAlign: 'center'}}>
+                <Divider>
+                    <a
+                        rel="noopener noreferrer"
+                        target="_blank"
+                        href="https://www.linkedin.com/in/nicolasmonkerud/">
+                        Click to see my LinkedIn Profile!
+                    </a>
+                </Divider>
+            </Footer>
         </Layout>
     </Layout>
 }
