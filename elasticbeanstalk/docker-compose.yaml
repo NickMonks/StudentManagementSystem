@@ -15,7 +15,7 @@ version : "3.8"
 services:
   backend:
     #Image pulled from our docker hub
-    image: "nickmonks94/management-system-students:latest"
+    image: "nickmonks94/management-system-students:3"
     ports:
       - "80:8080"
     #Restart if any issues appear
